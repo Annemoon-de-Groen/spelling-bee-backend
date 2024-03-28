@@ -1,11 +1,19 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Repositories.Interfaces;
+using api_cinema_challenge.Repositories.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped<IPlayRepository, PlayRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
 
 var app = builder.Build();
 
@@ -17,4 +25,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ConfigureTicketEndpoints();
+app.ConfigurePlayEndpoints();
+app.ConfigurePlayerEndpoints();
+app.ConfigureQuestionEndpoint();
+app.ConfigureScoreEndpoints();
 app.Run();
