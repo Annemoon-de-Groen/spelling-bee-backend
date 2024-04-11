@@ -1,0 +1,65 @@
+services:
+  spelling.api:
+    image: ${DOCKER_REGISTRY-}apicinemachallenge
+    build:
+      context: .
+      dockerfile: api-cinema-challenge/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - spelling-network
+    depends_on:
+      spelling.database:
+        condition: service_healthy
+  spelling.database:
+    container_name: "spelling.database" # host url for my postgres db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    networks:
+      - spelling-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  spelling-network:
+    driver: bridge
+
+
+
+
+
+#services:
+ # api-cinema-challenge:
+  #  image: ${DOCKER_REGISTRY-}apicinemachallenge
+   # build:
+    #  context: .
+#      dockerfile: api-cinema-challenge/Dockerfile
+ # spelling.database:
+  #  container_name: 'spelling.database' #host url for my postgres db
+   # image: postgres:latest
+    #environment: 
+     #   POSTGRES_DB: postgres
+      #  POSTGRES_USER: postgres
+       # POSTGRES_PASSWORD: password
+  #  ports: 
+   #    - 5432:5432
+
+#networks:
+ # spelling-network: 
+  #  driver: bridge
+    

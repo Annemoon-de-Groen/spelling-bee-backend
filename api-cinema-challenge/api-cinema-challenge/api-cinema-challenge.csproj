@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>api_cinema_challenge</RootNamespace>
     <UserSecretsId>b6f63085-cb87-4406-93a3-ec5b7b390ace</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
