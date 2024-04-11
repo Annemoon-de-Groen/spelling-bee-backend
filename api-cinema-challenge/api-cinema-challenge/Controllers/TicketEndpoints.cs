@@ -16,6 +16,7 @@ namespace api_cinema_challenge.Controllers
             TicketGroup.MapPost("/{playId}", CreateTicket);
             TicketGroup.MapDelete("/{id}", DeleteTicket);
             TicketGroup.MapPut("/{id}", EditTicket);
+            TicketGroup.MapPut("/pay/{id}", PayTicket);
         }
 
         //Should be exclusive for Admins
@@ -67,7 +68,7 @@ namespace api_cinema_challenge.Controllers
         {
             Tickets? ticket = await repository.GetTicketById(id);
             if (ticket is null) return TypedResults.NotFound();
-            repository.DeleteTicket(ticket);
+            await repository.DeleteTicket(ticket);
             return TypedResults.Ok(new TicketResponseDTO(ticket));
         }
         public static async Task<IResult> EditTicket(ITicketRepository repository, int id, TicketEditPayload data)
@@ -75,6 +76,13 @@ namespace api_cinema_challenge.Controllers
             Tickets? ticket = await repository.GetTicketById(id);
             if (ticket is null) return TypedResults.NotFound();
             Tickets result = await repository.EditTicket(ticket, data.firstName, data.lastName, data.amount, data.paid, data.playId);
+            return TypedResults.Ok(new TicketResponseDTO(result));
+        }
+        public static async Task<IResult> PayTicket(ITicketRepository repository, int id)
+        {
+            Tickets? ticket = await repository.GetTicketById(id);
+            if (ticket is null) return TypedResults.NotFound();
+            Tickets result = await repository.PayTicket(ticket);
             return TypedResults.Ok(new TicketResponseDTO(result));
         }
     }
