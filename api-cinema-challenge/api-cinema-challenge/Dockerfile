@@ -9,7 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["api-cinema-challenge/api-cinema-challenge.csproj", "api-cinema-challenge/"]
+COPY [. , "api-cinema-challenge/"]
 RUN dotnet restore "./api-cinema-challenge/./api-cinema-challenge.csproj"
 COPY . .
 WORKDIR "/src/api-cinema-challenge"
